@@ -10,6 +10,8 @@ The site is intended for homeowners, property managers, and real estate partners
 - `planning/website/page-briefs.md`: page-by-page UX briefs, content hierarchy, CTA plan, and schema coverage
 - `planning/website/seo-map.md`: metadata map, URL plan, keyword intent, and internal-linking guidance
 - `planning/website/foundation-spec.md`: CSS system, layout framework, component architecture, content model, and implementation priorities
+- `planning/website/design-tokens.json`: machine-readable design tokens for color, typography, spacing, layout, and component sizing
+- `planning/website/ui-system-spec.md`: UI component specs, interaction states, accessibility rules, and repeated section patterns
 
 ## Intended Stack
 
@@ -62,6 +64,8 @@ npm run dev
 - `planning/website/page-briefs.md` exists
 - `planning/website/seo-map.md` exists
 - `planning/website/foundation-spec.md` exists
+- `planning/website/design-tokens.json` exists
+- `planning/website/ui-system-spec.md` exists
 
 ## Delivery Assumptions
 
