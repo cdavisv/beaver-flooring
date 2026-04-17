@@ -37,6 +37,7 @@ npm --version
 
 ```bash
 npm install
+npx playwright install chromium
 npm run dev
 ```
 
@@ -66,9 +67,18 @@ npm run build
 npm run start
 npm run lint
 npm run test
+npm run test:coverage
+npm run test:e2e
+npm run test:perf
+npm run test:qa
 npm run format
 npm run format:check
 ```
+
+Notes:
+
+- Run `npx playwright install chromium` once per machine before the browser suite.
+- `npm run test:qa` is the release gate used on this branch: unit/integration coverage, production build, browser smoke, accessibility scan, and performance budget check.
 
 ## Contact flow behavior
 
@@ -101,8 +111,7 @@ Run these commands:
 
 ```bash
 npm run lint
-npm run test
-npm run build
+npm run test:qa
 ```
 
 Then verify:

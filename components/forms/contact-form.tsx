@@ -20,15 +20,27 @@ export function ContactForm({ urgent = false }: { urgent?: boolean }) {
 
     setFormState({ status: "submitting", message: "Sending your request..." });
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(Object.fromEntries(formData.entries())),
-    });
+    let response: Response;
+    let data: { message?: string };
 
-    const data = (await response.json()) as { message?: string };
+    try {
+      response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
+      });
+
+      data = (await response.json()) as { message?: string };
+    } catch {
+      setFormState({
+        status: "error",
+        message:
+          "We could not send your request. Please call instead if the issue is urgent.",
+      });
+      return;
+    }
 
     if (!response.ok) {
       setFormState({
@@ -54,6 +66,7 @@ export function ContactForm({ urgent = false }: { urgent?: boolean }) {
       className="surface-card stack"
       style={{ padding: "24px" }}
       onSubmit={onSubmit}
+      aria-label={urgent ? "Urgent contact request form" : "Contact request form"}
     >
       <div className="grid-2">
         <Field label="Name" name="name" required />
@@ -63,6 +76,19 @@ export function ContactForm({ urgent = false }: { urgent?: boolean }) {
         <Field label="Service type" name="serviceType" required />
         <Field label="Preferred callback time" name="callbackTime" />
       </div>
+      <Field
+        label="Company"
+        name="company"
+        autoComplete="off"
+        tabIndex={-1}
+        wrapperStyle={{
+          position: "absolute",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+        }}
+      />
       <Field label="Message" name="message" as="textarea" required />
       <input
         type="hidden"
@@ -80,6 +106,7 @@ export function ContactForm({ urgent = false }: { urgent?: boolean }) {
       {formState.message ? (
         <p
           role={formState.status === "error" ? "alert" : "status"}
+          aria-live="polite"
           style={{
             margin: 0,
             color:
@@ -103,12 +130,18 @@ function Field({
   type = "text",
   required = false,
   as = "input",
+  autoComplete,
+  tabIndex,
+  wrapperStyle,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   as?: "input" | "textarea";
+  autoComplete?: string;
+  tabIndex?: number;
+  wrapperStyle?: React.CSSProperties;
 }) {
   const sharedStyles = {
     width: "100%",
@@ -121,19 +154,27 @@ function Field({
   } satisfies React.CSSProperties;
 
   return (
-    <label className="stack" style={{ gap: "8px" }}>
+    <label className="stack" style={{ gap: "8px", ...wrapperStyle }}>
       <span style={{ fontWeight: 700 }}>
         {label}
         {required ? " *" : ""}
       </span>
       {as === "textarea" ? (
-        <textarea name={name} required={required} style={sharedStyles} />
+        <textarea
+          name={name}
+          required={required}
+          style={sharedStyles}
+          autoComplete={autoComplete}
+          tabIndex={tabIndex}
+        />
       ) : (
         <input
           name={name}
           type={type}
           required={required}
           style={sharedStyles}
+          autoComplete={autoComplete}
+          tabIndex={tabIndex}
         />
       )}
     </label>

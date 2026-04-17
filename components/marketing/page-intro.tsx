@@ -12,7 +12,12 @@ export function PageIntro({
   return (
     <section className="section">
       <div className="container stack" style={{ gap: "24px" }}>
-        <SectionHeading eyebrow={eyebrow} title={title} copy={description} />
+        <SectionHeading
+          eyebrow={eyebrow}
+          title={title}
+          copy={description}
+          as="h1"
+        />
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ export function MapPanel() {
   return (
     <div className="content-shell">
       <div className="stack">
-        <h3 style={{ margin: 0, fontSize: "1.5rem" }}>Service area</h3>
+        <h2 style={{ margin: 0, fontSize: "1.5rem" }}>Service area</h2>
         <p className="section-copy" style={{ margin: 0 }}>
           We support homeowners and commercial clients across Beaverton,
           Portland, and nearby communities, with emergency response prioritized

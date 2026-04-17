@@ -1,5 +1,6 @@
 "use client";
 
+import { EmergencyBanner } from "@/components/layout/emergency-banner";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -21,6 +22,7 @@ export function SiteHeader() {
         borderBottom: "1px solid var(--border-soft)",
       }}
     >
+      <EmergencyBanner />
       <div className="container" style={{ padding: "14px 0" }}>
         <div
           className="cluster"
