@@ -1,42 +1,42 @@
 import { NextResponse } from "next/server";
 
-type ContactPayload = {
-  name?: string;
-  phone?: string;
-  email?: string;
-  location?: string;
-  serviceType?: string;
-  callbackTime?: string;
-  message?: string;
-  priority?: string;
-};
+import { submitContactRequest } from "@/lib/contact/service";
+import type { ContactSubmissionInput } from "@/lib/contact/types";
 
-const requiredFields: (keyof ContactPayload)[] = [
-  "name",
-  "phone",
-  "email",
-  "location",
-  "serviceType",
-  "message",
-];
+export const runtime = "nodejs";
+
+function getSourceIp(request: Request) {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as ContactPayload;
-  const missingFields = requiredFields.filter((field) => !body[field]?.trim());
+  let body: ContactSubmissionInput;
 
-  if (missingFields.length > 0) {
+  try {
+    body = (await request.json()) as ContactSubmissionInput;
+  } catch {
     return NextResponse.json(
       {
-        message: `Please complete the required fields: ${missingFields.join(", ")}.`,
+        message: "Invalid JSON payload.",
       },
       { status: 400 },
     );
   }
 
-  return NextResponse.json({
-    message:
-      body.priority === "urgent"
-        ? "Your urgent request was submitted. If the issue is active, please call us now so we can start triage immediately."
-        : "Your request was submitted. We will follow up with the next step and expected timing.",
+  const result = await submitContactRequest({
+    payload: body,
+    sourceIp: getSourceIp(request),
   });
+
+  return NextResponse.json(
+    {
+      message: result.message,
+      ...(result.ok ? { submissionId: result.submission.id } : {}),
+    },
+    { status: result.status },
+  );
 }
