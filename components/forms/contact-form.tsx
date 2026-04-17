@@ -66,7 +66,9 @@ export function ContactForm({ urgent = false }: { urgent?: boolean }) {
       className="surface-card stack"
       style={{ padding: "24px" }}
       onSubmit={onSubmit}
-      aria-label={urgent ? "Urgent contact request form" : "Contact request form"}
+      aria-label={
+        urgent ? "Urgent contact request form" : "Contact request form"
+      }
     >
       <div className="grid-2">
         <Field label="Name" name="name" required />

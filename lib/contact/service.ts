@@ -92,7 +92,8 @@ function validatePayload(input: ContactSubmissionInput) {
     return {
       ok: false as const,
       status: 400 as const,
-      message: "Please include a few more details so the team can triage your request.",
+      message:
+        "Please include a few more details so the team can triage your request.",
     };
   }
 
@@ -156,7 +157,7 @@ async function deliverWebhook(submission: ContactSubmission) {
 export async function submitContactRequest(args: {
   payload: ContactSubmissionInput;
   sourceIp: string;
-}) : Promise<ContactServiceResult> {
+}): Promise<ContactServiceResult> {
   const validation = validatePayload(args.payload);
   if (!validation.ok) {
     return validation;

@@ -7,7 +7,9 @@ export function consumeRateLimit(
   now = Date.now(),
 ) {
   const timestamps = rateLimitStore.get(key) ?? [];
-  const activeWindow = timestamps.filter((timestamp) => now - timestamp < windowMs);
+  const activeWindow = timestamps.filter(
+    (timestamp) => now - timestamp < windowMs,
+  );
 
   if (activeWindow.length >= limit) {
     rateLimitStore.set(key, activeWindow);

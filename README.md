@@ -79,6 +79,7 @@ Notes:
 
 - Run `npx playwright install chromium` once per machine before the browser suite.
 - `npm run test:qa` is the release gate used on this branch: unit/integration coverage, production build, browser smoke, accessibility scan, and performance budget check.
+- The browser suite covers the required route matrix, contact submission flow, mobile navigation access, and axe-based accessibility scans on the highest-traffic pages.
 
 ## Contact flow behavior
 

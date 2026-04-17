@@ -25,6 +25,11 @@ export default function ServicesPage() {
       />
       <section className="section">
         <div className="container">
+          <SectionHeading
+            eyebrow="Service lineup"
+            title="Five core service paths, each with its own scope guidance and contact route."
+            copy="Visitors can start with the service that best matches the problem, then move deeper into detail pages, guides, and proof."
+          />
           <div className="grid-3">
             {services.map((service) => (
               <ServiceCard key={service.slug} service={service} />
