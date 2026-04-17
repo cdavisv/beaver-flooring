@@ -5,13 +5,13 @@
 Considered approaches:
 
 1. Docs-only IA package focused on sitemap and page copy planning.
-Feasibility: high. Completeness: low for downstream engineering. Risk: leaves architectural ambiguity.
+   Feasibility: high. Completeness: low for downstream engineering. Risk: leaves architectural ambiguity.
 
 2. Foundation package with IA, SEO, CSS token system, layout rules, content contracts, and repo topology.
-Feasibility: high. Completeness: high. Risk: low because it keeps decisions reversible while removing developer ambiguity.
+   Feasibility: high. Completeness: high. Risk: low because it keeps decisions reversible while removing developer ambiguity.
 
 3. Full Next.js scaffold plus design system implementation.
-Feasibility: medium. Completeness: high. Risk: outside the UX-architect scope for this step and too opinionated without app-owner approval.
+   Feasibility: medium. Completeness: high. Risk: outside the UX-architect scope for this step and too opinionated without app-owner approval.
 
 Selected: approach 2 because it satisfies the role requirements, unblocks implementation, and keeps the repository aligned with the current workflow stage.
 

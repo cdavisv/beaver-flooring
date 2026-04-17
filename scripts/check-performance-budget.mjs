@@ -1,7 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const manifestPath = path.join(process.cwd(), ".next", "app-build-manifest.json");
+const manifestPath = path.join(
+  process.cwd(),
+  ".next",
+  "app-build-manifest.json",
+);
 const routeMapPath = path.join(
   process.cwd(),
   ".next",
@@ -9,7 +13,9 @@ const routeMapPath = path.join(
 );
 
 if (!fs.existsSync(manifestPath)) {
-  throw new Error("Missing .next/app-build-manifest.json. Run `npm run build` first.");
+  throw new Error(
+    "Missing .next/app-build-manifest.json. Run `npm run build` first.",
+  );
 }
 
 if (!fs.existsSync(routeMapPath)) {
@@ -22,15 +28,32 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const routeMap = JSON.parse(fs.readFileSync(routeMapPath, "utf8"));
 const pages = manifest.pages ?? {};
 
+function toRoutePattern(appRoute) {
+  return new RegExp(
+    `^${appRoute.replace(/\[[^/]+\]/g, "[^/]+").replace(/\//g, "\\/")}$`,
+  );
+}
+
 const budgets = [
   { route: "/", maxBytes: 380_000 },
+  { route: "/about", maxBytes: 360_000 },
+  { route: "/about/team", maxBytes: 360_000 },
+  { route: "/services", maxBytes: 360_000 },
+  { route: "/services/emergency-plumbing", maxBytes: 360_000 },
+  { route: "/faq", maxBytes: 360_000 },
   { route: "/contact", maxBytes: 380_000 },
+  { route: "/privacy-policy", maxBytes: 360_000 },
+  { route: "/terms-of-service", maxBytes: 360_000 },
+  { route: "/testimonials-case-studies", maxBytes: 360_000 },
+  { route: "/guides/pricing-estimates", maxBytes: 360_000 },
 ];
 
 function getRouteSize(route) {
-  const manifestRoute = Object.entries(routeMap).find(
-    ([, appRoute]) => appRoute === route,
-  )?.[0];
+  const manifestRoute =
+    Object.entries(routeMap).find(([, appRoute]) => appRoute === route)?.[0] ??
+    Object.entries(routeMap).find(([, appRoute]) =>
+      toRoutePattern(appRoute).test(route),
+    )?.[0];
 
   if (!manifestRoute) {
     throw new Error(`Missing route mapping for route: ${route}`);

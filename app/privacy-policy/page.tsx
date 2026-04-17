@@ -1,5 +1,7 @@
+import { CtaBand } from "@/components/marketing/cta-band";
 import { PageIntro } from "@/components/marketing/page-intro";
 import { getBaseMetadata } from "@/lib/seo";
+import { businessInfo } from "@/lib/site";
 
 export const metadata = getBaseMetadata({
   title: "Privacy Policy | Beaver Flooring",
@@ -45,6 +47,14 @@ export default function PrivacyPolicyPage() {
           </p>
         </div>
       </section>
+      <CtaBand
+        title="Need a property-specific answer instead of a policy summary?"
+        copy="Use the contact page for scheduling, estimate, or data-handling questions, or call directly if the plumbing issue is urgent."
+        primaryHref="/contact"
+        primaryLabel="Contact Beaver Flooring"
+        secondaryHref={businessInfo.phoneHref}
+        secondaryLabel="Call now"
+      />
     </>
   );
 }

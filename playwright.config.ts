@@ -15,11 +15,15 @@ export default defineConfig({
   webServer: {
     command: "npm run start",
     port,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     env: {
       PORT: String(port),
       NEXT_PUBLIC_SITE_URL: `http://127.0.0.1:${port}`,
-      CONTACT_ARCHIVE_PATH: path.join(process.cwd(), ".tmp", "contact-e2e.jsonl"),
+      CONTACT_ARCHIVE_PATH: path.join(
+        process.cwd(),
+        ".tmp",
+        "contact-e2e.jsonl",
+      ),
       CONTACT_RATE_LIMIT_MAX: "10",
       CONTACT_RATE_LIMIT_WINDOW_MS: "900000",
     },

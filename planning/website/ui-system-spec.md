@@ -27,16 +27,16 @@ This document defines the visual system and component-level rules for the Beaver
 
 ## Typography Scale
 
-| Token | Desktop Use | Mobile Use | Notes |
-| --- | --- | --- | --- |
-| `text-4xl` | Home hero headline | Rarely used | Reserve for primary hero only |
-| `text-3xl` | Section headline | Hero headline | Use display face |
-| `text-2xl` | Subsection headline | Section headline | Use on proof, FAQ, and service intros |
-| `text-xl` | Card headline | Card headline | Keep line length compact |
-| `text-lg` | Lead paragraph | Body emphasis | Use sparingly |
-| `text-md` | Default body | Default body | Main paragraph size |
-| `text-sm` | Metadata, labels | Metadata, labels | Minimum body-adjacent size |
-| `text-xs` | Legal/supporting notes | Legal/supporting notes | Never for core CTA copy |
+| Token      | Desktop Use            | Mobile Use             | Notes                                 |
+| ---------- | ---------------------- | ---------------------- | ------------------------------------- |
+| `text-4xl` | Home hero headline     | Rarely used            | Reserve for primary hero only         |
+| `text-3xl` | Section headline       | Hero headline          | Use display face                      |
+| `text-2xl` | Subsection headline    | Section headline       | Use on proof, FAQ, and service intros |
+| `text-xl`  | Card headline          | Card headline          | Keep line length compact              |
+| `text-lg`  | Lead paragraph         | Body emphasis          | Use sparingly                         |
+| `text-md`  | Default body           | Default body           | Main paragraph size                   |
+| `text-sm`  | Metadata, labels       | Metadata, labels       | Minimum body-adjacent size            |
+| `text-xs`  | Legal/supporting notes | Legal/supporting notes | Never for core CTA copy               |
 
 Typography rules:
 

@@ -1,5 +1,7 @@
+import { CtaBand } from "@/components/marketing/cta-band";
 import { PageIntro } from "@/components/marketing/page-intro";
 import { getBaseMetadata } from "@/lib/seo";
+import { businessInfo } from "@/lib/site";
 
 export const metadata = getBaseMetadata({
   title: "Terms of Service | Beaver Flooring",
@@ -47,6 +49,14 @@ export default function TermsOfServicePage() {
           </p>
         </div>
       </section>
+      <CtaBand
+        title="Need help with a live service issue or estimate question?"
+        copy="Use the contact page for scheduled work and project questions, or call directly when the plumbing problem is active and urgent."
+        primaryHref="/contact"
+        primaryLabel="Request service"
+        secondaryHref={businessInfo.phoneHref}
+        secondaryLabel="Call now"
+      />
     </>
   );
 }

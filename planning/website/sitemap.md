@@ -194,4 +194,4 @@ Contact
 ## Implementation Order
 
 AXL: id=ux-sitemap-impl; to=@frontend-dev; pri=hi; c=build-order; st=proposed; art=routes
-  foundation -> shared layout -> primary pages -> service detail templates -> guides -> legal pages -> polish
+foundation -> shared layout -> primary pages -> service detail templates -> guides -> legal pages -> polish

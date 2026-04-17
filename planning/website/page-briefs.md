@@ -137,4 +137,4 @@
 ## Component Priority
 
 AXL: id=ux-page-briefs-1; to=@frontend-dev; pri=hi; c=handoff; st=proposed; art=components
-  1=site shell; 2=hero+cta band; 3=service card grid; 4=testimonial card; 5=gallery rail; 6=faq accordion; 7=contact form; 8=map block; 9=legal template
+1=site shell; 2=hero+cta band; 3=service card grid; 4=testimonial card; 5=gallery rail; 6=faq accordion; 7=contact form; 8=map block; 9=legal template
