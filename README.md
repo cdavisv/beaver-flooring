@@ -1,74 +1,119 @@
 # Beaver Flooring Website
 
-Beaver Flooring Website is a planned multi-page business website for a Portland-metro plumbing service brand. This repository currently contains the UX architecture, information architecture, SEO foundation, and implementation handoff needed before the Next.js application is scaffolded.
+Beaver Flooring Website is a multi-page Next.js marketing site for a Beaverton and Portland metro plumbing business. It is built to help homeowners, property managers, and real estate partners quickly understand services, trust the company, and convert through emergency phone calls or contact-form inquiries.
 
-The site is intended for homeowners, property managers, and real estate partners who need plumbing services in Beaverton and the broader Portland metro area. The delivery target is a professional, mobile-first, lead-generation website deployed on Vercel with strong local SEO, clear service differentiation, and prominent emergency-service calls to action.
+This repo now includes the actual website application, shared content contracts for services and guides, the planning artifacts that informed the build, and a low-ops in-app contact handler suitable for a Vercel deployment.
 
-## What Is In This Repo Today
+## What the repo includes
 
-- `planning/website/sitemap.md`: sitemap, nav tree, page hierarchy, and reusable page templates
-- `planning/website/page-briefs.md`: page-by-page UX briefs, content hierarchy, CTA plan, and schema coverage
-- `planning/website/seo-map.md`: metadata map, URL plan, keyword intent, and internal-linking guidance
-- `planning/website/foundation-spec.md`: CSS system, layout framework, component architecture, content model, and implementation priorities
-- `planning/website/design-tokens.json`: machine-readable design tokens for color, typography, spacing, layout, and component sizing
-- `planning/website/ui-system-spec.md`: UI component specs, interaction states, accessibility rules, and repeated section patterns
+- `app/`: Next.js App Router pages, layouts, route handlers, and global styles
+- `components/`: reusable layout, marketing, form, theme, and SEO components
+- `lib/`: typed site data, content contracts, metadata helpers, and JSON-LD builders
+- `planning/website/`: sitemap, page briefs, SEO map, design tokens, and UI system specs used as implementation inputs
+- `__tests__/`: Jest and React Testing Library coverage for interactive UI and contact-flow behavior
 
-## Intended Stack
+## Stack
 
-- Framework: Next.js
-- Hosting: Vercel
-- Styling: CSS custom properties with semantic design tokens
-- Analytics: Google Analytics
-- Integrations: contact forms with email notifications, Google Maps embed, click-to-call links, social links
-
-## Current Status
-
-This branch does not yet include a scaffolded Next.js app, `package.json`, or runnable local server. The current deliverable is the project foundation package that downstream implementation agents will build from.
+- Next.js 15
+- React 19
+- TypeScript with strict mode
+- CSS custom properties for the design-token layer
+- Jest + React Testing Library for tests
+- ESLint + Prettier for code quality
 
 ## Prerequisites
 
-- Git, to clone or inspect the repository
-- A text editor or IDE to review the planning files
-- Node.js is not yet required on this branch because no runnable application files have been added yet
+- Node.js 20 or newer
+- npm 10 or newer
 
-## Review The Planning Package
+Check your versions if needed:
 
 ```bash
-git clone https://github.com/cdavisv/beaver-flooring.git
-cd beaver-flooring
-find planning -maxdepth 2 -type f | sort
+node --version
+npm --version
 ```
 
-## Planned Environment Variables For The App Build
-
-These are planning assumptions for the upcoming Next.js implementation, not active runtime requirements on this branch.
-
-- `NEXT_PUBLIC_SITE_URL`
-- `NEXT_PUBLIC_GA_ID`
-- `CONTACT_FORM_TO_EMAIL`
-- `GOOGLE_MAPS_EMBED_URL`
-
-## Planned First Bootstrap After App Scaffold Exists
-
-These commands are not available yet on this branch because the app has not been scaffolded.
+## Install and run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Verification Checklist For This Branch
+Then open `http://localhost:3000`.
 
-- `README.md` reflects the actual repo state and notes that the app is not scaffolded yet
-- `planning/website/sitemap.md` exists
-- `planning/website/page-briefs.md` exists
-- `planning/website/seo-map.md` exists
-- `planning/website/foundation-spec.md` exists
-- `planning/website/design-tokens.json` exists
-- `planning/website/ui-system-spec.md` exists
+## Environment variables
 
-## Delivery Assumptions
+Create a `.env.local` file in the repo root when you want to override the default local settings.
 
-- Brand positioning uses a corporate, trustworthy tone with warm-neutral colors and navy/copper accents
-- The site should ship with a light/dark/system theme toggle by default
-- The lowest-ops implementation path is a statically rendered Next.js marketing site on Vercel with managed form delivery and no custom auth for public visitors
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+GOOGLE_MAPS_EMBED_URL=https://www.google.com/maps?q=Beaverton%2C%20Oregon&z=10&output=embed
+NEXT_PUBLIC_GA_ID=
+```
+
+Notes:
+
+- `NEXT_PUBLIC_SITE_URL` is used for canonical metadata and JSON-LD URLs.
+- `GOOGLE_MAPS_EMBED_URL` lets you swap in a production map embed without changing code.
+- `NEXT_PUBLIC_GA_ID` is reserved for future analytics wiring. The current site does not yet emit GA events.
+
+## Available scripts
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm run test
+npm run format
+npm run format:check
+```
+
+## Contact flow behavior
+
+- The contact form posts to `app/api/contact/route.ts`
+- The current implementation validates required fields and returns a success or error response
+- It is intentionally low-ops and stays inside the Next.js app boundary
+- It does not yet persist submissions or send email, so production lead delivery still needs an email or CRM handoff in a later step
+
+## Verification checklist
+
+Run these commands:
+
+```bash
+npm run lint
+npm run test
+npm run build
+```
+
+Then verify:
+
+- The homepage loads with the emergency banner, header CTAs, and theme toggle
+- Required pages render: `/`, `/about`, `/about/team`, `/services`, `/faq`, `/contact`, `/privacy-policy`, `/terms-of-service`, `/testimonials-case-studies`
+- Expanded sitemap pages render: service detail routes and the four guide pages
+- The contact form shows success for complete submissions and an error for missing required fields
+- The map panel renders with both an iframe and plain-text service-area coverage
+
+## Deployment
+
+The intended hosting target is Vercel.
+
+Typical deployment flow:
+
+```bash
+npm run build
+```
+
+Set the production environment variables in Vercel before shipping. If lead delivery needs to go beyond the current success-response stub, add an email service or CRM integration in a follow-up step rather than moving form handling client-side.
+
+## Planning references
+
+Implementation aligns to these files:
+
+- `planning/website/sitemap.md`
+- `planning/website/page-briefs.md`
+- `planning/website/seo-map.md`
+- `planning/website/foundation-spec.md`
+- `planning/website/ui-system-spec.md`
+- `planning/website/design-tokens.json`
