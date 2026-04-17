@@ -73,9 +73,27 @@ npm run format:check
 ## Contact flow behavior
 
 - The contact form posts to `app/api/contact/route.ts`
-- The current implementation validates required fields and returns a success or error response
-- It is intentionally low-ops and stays inside the Next.js app boundary
-- It does not yet persist submissions or send email, so production lead delivery still needs an email or CRM handoff in a later step
+- The current implementation validates required fields, rejects malformed payloads, and rate limits repeated requests by source IP
+- Every accepted submission is archived as JSONL on the server filesystem
+- If `CONTACT_WEBHOOK_URL` is configured, the route also forwards each saved submission to that webhook for email, CRM, or automation handoff
+- It stays inside the Next.js app boundary, so the frontend can post directly to `/api/contact`
+
+Additional backend env vars:
+
+```bash
+CONTACT_ARCHIVE_PATH=/tmp/beaver-flooring-contact-submissions.jsonl
+CONTACT_WEBHOOK_URL=
+CONTACT_WEBHOOK_TOKEN=
+CONTACT_RATE_LIMIT_MAX=5
+CONTACT_RATE_LIMIT_WINDOW_MS=900000
+```
+
+Notes:
+
+- `CONTACT_ARCHIVE_PATH` controls where the JSONL archive is written. For local development, you can point this at a repo-local path like `.data/contact-submissions.jsonl` if you want to inspect saved leads.
+- `CONTACT_WEBHOOK_URL` is optional. Set it to a Zapier, Make, Resend, Slack, CRM, or custom intake endpoint to push notifications downstream.
+- `CONTACT_WEBHOOK_TOKEN` is sent as a bearer token when present.
+- `CONTACT_RATE_LIMIT_MAX` and `CONTACT_RATE_LIMIT_WINDOW_MS` tune the per-IP throttle for the contact route.
 
 ## Verification checklist
 
@@ -92,7 +110,9 @@ Then verify:
 - The homepage loads with the emergency banner, header CTAs, and theme toggle
 - Required pages render: `/`, `/about`, `/about/team`, `/services`, `/faq`, `/contact`, `/privacy-policy`, `/terms-of-service`, `/testimonials-case-studies`
 - Expanded sitemap pages render: service detail routes and the four guide pages
-- The contact form shows success for complete submissions and an error for missing required fields
+- The contact form shows success for complete submissions and an error for missing or malformed required fields
+- Repeated submissions from the same IP eventually return HTTP `429`
+- New submissions appear in the configured JSONL archive path, and webhook delivery happens when `CONTACT_WEBHOOK_URL` is set
 - The map panel renders with both an iframe and plain-text service-area coverage
 
 ## Deployment
@@ -105,7 +125,7 @@ Typical deployment flow:
 npm run build
 ```
 
-Set the production environment variables in Vercel before shipping. If lead delivery needs to go beyond the current success-response stub, add an email service or CRM integration in a follow-up step rather than moving form handling client-side.
+Set the production environment variables in Vercel before shipping. The recommended production setup is to keep the route in-app, set `CONTACT_WEBHOOK_URL` to the real lead destination, and treat the filesystem archive as a secondary safety copy rather than the primary source of record.
 
 ## Planning references
 
