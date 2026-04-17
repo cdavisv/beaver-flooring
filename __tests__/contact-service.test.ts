@@ -73,6 +73,22 @@ describe("submitContactRequest", () => {
     });
   });
 
+  it("rejects submissions that fill the honeypot field", async () => {
+    const result = await submitContactRequest({
+      payload: {
+        ...validPayload,
+        company: "Spam Lead Co",
+      },
+      sourceIp: "203.0.113.10",
+    });
+
+    expect(result).toMatchObject({
+      ok: false,
+      status: 400,
+      message: "We could not validate this submission. Please call instead.",
+    });
+  });
+
   it("rate limits repeated requests from the same source", async () => {
     process.env.CONTACT_RATE_LIMIT_MAX = "1";
 
@@ -113,6 +129,28 @@ describe("submitContactRequest", () => {
         }),
       }),
     );
+
+    fetchMock.mockRestore();
+  });
+
+  it("returns 502 when webhook delivery fails after archiving", async () => {
+    process.env.CONTACT_WEBHOOK_URL = "https://example.com/contact-webhook";
+    const fetchMock = jest
+      .spyOn(global, "fetch")
+      .mockResolvedValue(new Response(null, { status: 500 }));
+
+    const result = await submitContactRequest({
+      payload: validPayload,
+      sourceIp: "203.0.113.10",
+    });
+
+    expect(result).toMatchObject({
+      ok: false,
+      status: 502,
+    });
+
+    const archive = await readFile(archivePath, "utf8");
+    expect(archive).toContain('"email":"alex@example.com"');
 
     fetchMock.mockRestore();
   });
